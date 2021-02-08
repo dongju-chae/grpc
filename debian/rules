@@ -1,0 +1,66 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+#export DH_VERBOSE = 1
+
+
+# see FEATURE AREAS in dpkg-buildflags(1)
+#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+# see ENVIRONMENT in dpkg-buildflags(1)
+# package maintainers to append CFLAGS
+#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+# package maintainers to append LDFLAGS
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+ROOT_DIR:=$(shell pwd)
+
+export LC_ALL=C.UTF-8
+export N_PROCS=`lscpu | grep "^CPU(s):" | sed -e "s/CPU(s):\s*//g"`
+
+%:
+	dh $@ --parallel
+
+override_dh_auto_test:
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf $(ROOT_DIR)/debian/tmp
+	rm -rf $(ROOT_DIR)/cmake/shared
+	rm -rf $(ROOT_DIR)/cmake/static
+
+override_dh_auto_configure:
+	mkdir -p $(ROOT_DIR)/cmake/static
+	mkdir -p $(ROOT_DIR)/cmake/shared
+	cd $(ROOT_DIR)/cmake/static && cmake ../../ \
+		-DCMAKE_INSTALL_PREFIX=/usr					\
+		-DgRPC_INSTALL=ON                   \
+		-DgRPC_ABSL_PROVIDER=package        \
+		-DgRPC_CARES_PROVIDER=package       \
+		-DgRPC_RE2_PROVIDER=package         \
+		-DgRPC_PROTOBUF_PROVIDER=package    \
+		-DgRPC_SSL_PROVIDER=package         \
+		-DgRPC_ZLIB_PROVIDER=package
+	cd $(ROOT_DIR)/cmake/shared && cmake ../../ \
+		-DCMAKE_INSTALL_PREFIX=/usr					\
+		-DBUILD_SHARED_LIBS=ON							\
+		-DgRPC_INSTALL=ON                   \
+		-DgRPC_ABSL_PROVIDER=package        \
+		-DgRPC_CARES_PROVIDER=package       \
+		-DgRPC_RE2_PROVIDER=package         \
+		-DgRPC_PROTOBUF_PROVIDER=package    \
+		-DgRPC_SSL_PROVIDER=package         \
+		-DgRPC_ZLIB_PROVIDER=package
+
+override_dh_auto_build:
+	cd $(ROOT_DIR)/cmake/static && $(MAKE) -j $(N_PROCS)
+	cd $(ROOT_DIR)/cmake/shared && $(MAKE) -j $(N_PROCS)
+
+override_dh_auto_install:
+	cd $(ROOT_DIR)/cmake/static && make install DESTDIR=$(ROOT_DIR)/debian/tmp
+	cd $(ROOT_DIR)/cmake/shared && make install DESTDIR=$(ROOT_DIR)/debian/tmp
+	chmod a-x $(ROOT_DIR)/debian/tmp/usr/share/grpc/roots.pem
+	rm -rf $(ROOT_DIR)/debian/tmp/usr/lib/cmake
+
+override_dh_install:
+	dh_install --sourcedir=${ROOT_DIR}/debian/tmp --list-missing

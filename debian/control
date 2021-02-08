@@ -1,0 +1,62 @@
+Source: grpc
+Section: misc
+Priority: optional
+Maintainer: Dongju Chae <dongju.chae@samsung.com>
+Build-Depends: debhelper (>=9), cmake, zlib1g-dev, libssl-dev, libabsl-dev,
+  libprotobuf-dev, protobuf-compiler (>=3.12), libgflags-dev, libgtest-dev,
+  libgoogle-perftools-dev, libprotoc-dev, libc-ares-dev, libre2-dev, pkg-config
+Standards-Version: 3.8.2
+Homepage: https://c-ares.haxx.se
+
+Package: libgrpc-dev
+Section: libdevel
+Architecture: amd64
+Depends: libgrpc14 (= ${binary:Version}), ${misc:Depends}, libabsl-dev, libre2-dev, libssl-dev
+Description: high performance general RPC framework (development)
+ A modern, open source remote procedure call (RPC) framework that can
+ run anywhere. It enables client and server applications to communicate
+ transparently, and makes it easier to build connected systems.
+ .
+ This package contains the headers and the static library for libgrpc14.
+
+Package: libgrpc14
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: high performance general RPC framework
+ A modern, open source remote procedure call (RPC) framework that can
+ run anywhere. It enables client and server applications to communicate
+ transparently, and makes it easier to build connected systems.
+ .
+ This package provides the gRPC C bindings.
+
+Package: libgrpc++-dev
+Section: libdevel
+Architecture: amd64
+Depends: libgrpc++1 (= ${binary:Version}), libgrpc-dev (=${binary:Version}), ${misc:Depends}
+Description: high performance general RPC framework (development)
+ A modern, open source remote procedure call (RPC) framework that can
+ run anywhere. It enables client and server applications to communicate
+ transparently, and makes it easier to build connected systems.
+ .
+ This package contains the headers and the static library for libgrpc++1.
+
+Package: libgrpc++1
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: high performance general RPC framework
+ A modern, open source remote procedure call (RPC) framework that can
+ run anywhere. It enables client and server applications to communicate
+ transparently, and makes it easier to build connected systems.
+ .
+ This package provides the gRPC C++ bindings.
+
+Package: protobuf-compiler-grpc
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}, protobuf-compiler
+Description: high performance general RPC framework - protobuf plugin
+ A modern, open source remote procedure call (RPC) framework that can
+ run anywhere. It enables client and server applications to communicate
+ transparently, and makes it easier to build connected systems.
+ .
+ This package provides the plugins needed for compiling gRPC service
+ definitions with the protobuf compiler.

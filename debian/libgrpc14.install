@@ -1,0 +1,6 @@
+usr/share/grpc/roots.pem
+usr/lib/libgpr.so.*
+usr/lib/libgrpc.so.*
+usr/lib/libgrpc_*.so.*
+usr/lib/libupb.so.*
+usr/lib/libaddress_sorting.so.*

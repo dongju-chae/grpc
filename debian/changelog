@@ -1,0 +1,23 @@
+grpc (1.30.5) unstable xenial bionic focal; urgency=medium
+
+  * Bump to version 1.35.0
+
+ -- Dongju Chae <dongju.chae@samsung.com>  Tue, 09 Feb 2021 15:26:00 +0900
+
+grpc (1.20.1-2) unstable xenial bionic focal; urgency=medium
+
+  * Revise protobuf-compiler dependency issue and fix build errors on focal
+
+ -- Dongju Chae <dongju.chae@samsung.com>  Thu, 24 Dec 2020 10:41:00 +0900
+
+grpc (1.20.1-1) unstable xenial bionic; urgency=medium
+
+  * Remove unncessary dependencies
+
+ -- Dongju Chae <dongju.chae@samsung.com>  Thu, 05 Nov 2020 17:01:00 +0900
+
+grpc (1.20.1) unstable xenial bionic; urgency=medium
+
+  * 1.20.1 ppa porting
+
+ -- Dongju Chae <dongju.chae@samsung.com>  Mon, 19 Oct 2020 14:35:00 +0900
